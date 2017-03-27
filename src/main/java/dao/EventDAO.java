@@ -13,6 +13,8 @@ import java.util.List;
 public interface EventDAO {
     void add(Event event);
     void delete(Event event);
-    Event findOne(long id);
     List<Event> list();
+    List<Event> list(String pattern);
+    Event findOne(long id);
+    void delete(long[] ids);
 }

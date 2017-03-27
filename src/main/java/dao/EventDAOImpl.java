@@ -41,8 +41,25 @@ public class EventDAOImpl implements EventDAO {
     }
 
     @Override
+    public void delete(long[] ids) {
+        Event event;
+        for (long id : ids) {
+            event = entityManager.getReference(Event.class, id);
+            entityManager.remove(event);
+            logger.info("Deleted router: '" + event + "'");
+        }
+    }
+
+    @Override
     public List<Event> list() {
         Query query = entityManager.createQuery("SELECT e FROM Event e", Event.class);
+        return (List<Event>) query.getResultList();
+    }
+
+    @Override
+    public List<Event> list(String pattern) {
+        Query query = entityManager.createQuery("SELECT e FROM Event e WHERE e.name LIKE :pattern", Event.class);
+        query.setParameter("pattern", "%" + pattern + "%");
         return (List<Event>) query.getResultList();
     }
 }

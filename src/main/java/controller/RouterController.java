@@ -9,10 +9,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import service.RouterService;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -21,9 +22,10 @@ import static org.slf4j.LoggerFactory.getLogger;
 @Controller
 @RequestMapping("/")
 @ComponentScan({"dao,model,service"})
-public class AppController {
-    private final static Logger logger = getLogger(AppController.class);
+public class RouterController {
+    private final static Logger logger = getLogger(RouterController.class);
     private final static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+    private final static SimpleDateFormat formatterDMY = new SimpleDateFormat("dd-MM-yyyy");
     private static final int DEFAULT_EVENT_ID = -1;
 
     @Autowired
@@ -33,9 +35,10 @@ public class AppController {
     public String index(Model model) {
         List listEvents = routerService.listEvents();
         model.addAttribute("events", listEvents);
-        model.addAttribute("routers", routerService.searchRouters(""));
+        model.addAttribute("routers", routerService.findRouters(""));
         return "index";
     }
+
 
     @RequestMapping("/router_add_page")
     public String routerAddPage(Model model) {
@@ -43,25 +46,10 @@ public class AppController {
         return "router_add_page";
     }
 
-    @RequestMapping("/event_add_page")
-    public String eventAddPage() {
-        return "event_add_page";
-    }
-
-    @RequestMapping("/event/{id}")
-    public String listEvent(@PathVariable(value = "id") long eventId, Model model) {
-        Event event = (eventId != DEFAULT_EVENT_ID) ? routerService.findEvent(eventId) : null;
-
-        model.addAttribute("events", routerService.listEvents());
-        model.addAttribute("currentEvent", event);
-        model.addAttribute("routers", routerService.listRouters(event));
-        return "index";
-    }
-
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     public String search(@RequestParam String pattern, Model model) {
         model.addAttribute("events", routerService.listEvents());
-        model.addAttribute("routers", routerService.searchRouters(pattern));
+        model.addAttribute("routers", routerService.findRouters(pattern));
         return "index";
     }
 
@@ -71,7 +59,7 @@ public class AppController {
             routerService.deleteRouter(toDelete);
 
         model.addAttribute("events", routerService.listEvents());
-        model.addAttribute("routers", routerService.searchRouters(""));
+        model.addAttribute("routers", routerService.findRouters(""));
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
@@ -101,7 +89,7 @@ public class AppController {
 
 
         model.addAttribute("events", routerService.listEvents());
-        model.addAttribute("routers", routerService.searchRouters(""));
+        model.addAttribute("routers", routerService.findRouters(""));
         return "index";
     }
 
@@ -116,25 +104,7 @@ public class AppController {
         routerService.addRouter(router);
 
         model.addAttribute("events", routerService.listEvents());
-        model.addAttribute("routers", routerService.searchRouters(""));
+        model.addAttribute("routers", routerService.findRouters(""));
         return "redirect:/";
-    }
-
-    @RequestMapping(value = "/event/add", method = RequestMethod.POST)
-    public String eventAdd(@RequestParam String name,
-                           @RequestParam String location,
-                           @RequestParam String dateFrom,
-                           @RequestParam String dateTo,
-                           Model model) {
-
-        try {
-            routerService.addEvent(new Event(name, location, formatter.parse(dateFrom), formatter.parse(dateTo)));
-        } catch (ParseException e) {
-            logger.error("Error data format when added event: " + name + ", " + location + ", " + dateFrom + ", " + dateTo, e.getMessage());
-        }
-
-        model.addAttribute("events", routerService.listEvents());
-        model.addAttribute("routers", routerService.searchRouters(""));
-        return "index";
     }
 }

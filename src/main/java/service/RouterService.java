@@ -16,7 +16,6 @@ import java.util.List;
  * Created by Vadim on 26.03.2017.
  */
 @Service("routerService")
-@Transactional
 public class RouterService {
     @Autowired
     private RouterDAO routerDAO;
@@ -44,6 +43,11 @@ public class RouterService {
     }
 
     @Transactional
+    public void deleteEvent(long[] ids) {
+        eventDAO.delete(ids);
+    }
+
+    @Transactional
     public List<Event> listEvents() {
         List<Event> events = eventDAO.list();
         return sortEvents(events);
@@ -59,18 +63,28 @@ public class RouterService {
         return eventDAO.findOne(id);
     }
 
-    @Transactional
-    public List<Router> searchRouters(String pattern) {
+    public List<Router> findRouters(String pattern) {
         List<Router> routers = routerDAO.list(pattern);
         return sortRouters(routers);
+    }
+
+    public List<Event> findEvents(String pattern) {
+        List<Event> events = eventDAO.list(pattern);
+        return sortEvents(events);
     }
 
     public Router findRouterById(long id) {
         return routerDAO.findOne(id);
     }
 
+    @Transactional
     public void updateRouter(Router router) {
         routerDAO.add(router);
+    }
+
+    @Transactional
+    public void updateEvent(Event event) {
+        eventDAO.add(event);
     }
 
     private List<Router> sortRouters(List<Router> routers) {

@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Routers</title>
+    <title>Events</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -11,43 +11,33 @@
 <body>
 
 <div class="container">
-    <h3>Routers</h3>
+    <h3>Events</h3>
 
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul id="groupList" class="nav navbar-nav">
                     <li>
-                        <button type="button" class="btn btn-default navbar-btn" onclick="window.location.href='/events'">Go to events</button>
+                    <button type="button" class="btn btn-default navbar-btn" onclick="window.location.href='/'">Go to routers</button>
                     </li>
                     <li>
-                        <button type="button" id="add_router" class="btn btn-default navbar-btn">Add router</button>
+                        <button type="button" id="add_event" class="btn btn-default navbar-btn">Add event</button>
                     </li>
                     <li>
-                     <form action="/router/edit" method="post">
-                            <input type="hidden" class="router_id" name="router_id" value="">
-                            <button type="submit" id="edit_router" class="btn btn-default navbar-btn">Edit router
+                     <form action="/event/edit_page" method="post">
+                            <input type="hidden" class="event_id" name="event_id" value="">
+                            <button type="submit" id="edit_event" class="btn btn-default navbar-btn">Edit event
                             </button>
                      </form>
                     </li>
                     <li>
-                        <button type="button" id="delete_router" class="btn btn-default navbar-btn">Delete router
+                        <button type="button" id="delete_event" class="btn btn-default navbar-btn">Delete event
                         </button>
                     </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                           aria-expanded="false">Events <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="/">All events</a></li>
-                            <c:forEach items="${events}" var="event">
-                                <li><a href="/event/${event.id}">${event.name}</a></li>
-                            </c:forEach>
-                        </ul>
-                    </li>
                 </ul>
-                <form class="navbar-form navbar-left" role="search" action="/search" method="post">
+                <form class="navbar-form navbar-left" role="search" action="/event/search" method="post">
                     <div class="form-group">
-                        <input type="text" class="form-control" name="pattern" placeholder="Search router">
+                        <input type="text" class="form-control" name="pattern" placeholder="Search event">
                     </div>
                     <button type="submit" class="btn btn-default">Submit</button>
                 </form>
@@ -60,17 +50,19 @@
         <thead>
         <tr>
             <td></td>
-            <td><b>Router name</b></td>
-            <td><b>apMac</b></td>
-            <td><b>Event</b></td>
+            <td><b>Event name</b></td>
+            <td><b>Event location</b></td>
+            <td><b>Event dateFrom</b></td>
+            <td><b>Event dateTo</b></td>
         </tr>
         </thead>
-        <c:forEach items="${routers}" var="router">
+        <c:forEach items="${events}" var="event">
             <tr>
-                <td><input class="idCheckbox" type="checkbox" name="toDelete[]" value="${router.id}" id="checkbox_${router.id}"/></td>
-                <td>${router.getName()}</td>
-                <td>${router.apMac}</td>
-                <td>${router.event}</td>
+                <td><input class="idCheckbox" type="checkbox" name="toDelete[]" value="${event.id}" id="checkbox_${event.id}"/></td>
+                <td>${event.name}</td>
+                <td>${event.location}</td>
+                <td>${event.dateFrom}</td>
+                <td>${event.dateTo}</td>
             </tr>
         </c:forEach>
     </table>
@@ -94,28 +86,25 @@
 <script>
     $('.dropdown-toggle').dropdown();
 
-    $('#add_router').click(function () {
-        window.location.href = '/router_add_page';
+    $('#add_event').click(function () {
+        window.location.href = '/event_add_page';
     });
 
-    $('#edit_router').click(function () {
+    $('#edit_event').click(function () {
         var data = $('.idCheckbox:checked').val();
-        $('.router_id').val(data)
+        $('.event_id').val(data)
     });
 
-    $('#delete_router').click(function () {
+    $('#delete_event').click(function () {
         var data = {'toDelete[]': []};
         $(":checked").each(function () {
             data['toDelete[]'].push($(this).val());
         });
-        $.post("/router/delete", data, function (data, status) {
+        $.post("/event/delete", data, function (data, status) {
             window.location.reload();
         });
     });
 
-    $('#add_event').click(function () {
-        window.location.href = '/event_add_page';
-    });
 </script>
 </body>
 </html>
