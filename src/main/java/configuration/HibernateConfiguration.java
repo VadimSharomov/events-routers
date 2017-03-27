@@ -1,5 +1,6 @@
 package configuration;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -16,11 +17,14 @@ import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Properties;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 @Configuration
 @EnableTransactionManagement
 @ComponentScan({"dao,model,service"})
 @PropertySource(value = {"classpath:application.properties"})
 public class HibernateConfiguration {
+    private final static Logger logger = getLogger(HibernateConfiguration.class);
 	 
     @Autowired
     private Environment environment;
@@ -43,15 +47,6 @@ public class HibernateConfiguration {
         dataSource.setPassword(environment.getRequiredProperty("jdbc.password"));
         return dataSource;
     }
-     
-    private Properties hibernateProperties() {
-        Properties properties = new Properties();
-        properties.put("hibernate.dialect", environment.getRequiredProperty("hibernate.dialect"));
-        properties.put("hibernate.show_sql", environment.getRequiredProperty("hibernate.show_sql"));
-//        properties.put("hibernate.format_sql", environment.getRequiredProperty("hibernate.format_sql"));
-        return properties;        
-    }
-     
 
     @Bean
     public PlatformTransactionManager transactionManager(final EntityManagerFactory emf) {
@@ -59,7 +54,16 @@ public class HibernateConfiguration {
         transactionManager.setEntityManagerFactory(emf);
         transactionManager.setDataSource(dataSource());
         transactionManager.setJpaProperties(hibernateProperties());
+        logger.info("hibernateProperties: '" + hibernateProperties() + "'");
         return transactionManager;
+    }
+
+    private Properties hibernateProperties() {
+        Properties properties = new Properties();
+        properties.put("hibernate.dialect", environment.getRequiredProperty("hibernate.dialect"));
+        properties.put("hibernate.show_sql", environment.getRequiredProperty("hibernate.show_sql"));
+        properties.put("hibernate.hbm2ddl.auto", environment.getRequiredProperty("hibernate.hbm2ddl.auto"));
+        return properties;
     }
 }
 

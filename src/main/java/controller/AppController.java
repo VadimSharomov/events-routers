@@ -2,6 +2,7 @@ package controller;
 
 import model.Event;
 import model.Router;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
@@ -14,10 +15,13 @@ import service.RouterService;
 import java.util.Date;
 import java.util.List;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 @Controller
 @RequestMapping("/")
 @ComponentScan({"dao,model,service"})
 public class AppController {
+    private final static Logger logger = getLogger(AppController.class);
     static final int DEFAULT_EVENT_ID = -1;
 
     @Autowired
@@ -69,12 +73,41 @@ public class AppController {
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
-    @RequestMapping(value="/router/add", method = RequestMethod.POST)
+    @RequestMapping(value = "/router/edit", method = RequestMethod.POST)
+    public String editRouterPage(@RequestParam(value = "router_id", required = false) Long router_id,
+                                 Model model) {
+        if (router_id != null) {
+            Router router = routerService.findRouterById(router_id);
+
+            model.addAttribute("events", routerService.listEvents());
+            model.addAttribute("router", router);
+            model.addAttribute("router_event", router.getEvent());
+            return "router_edit_page";
+        }
+        return "redirect:/";
+    }
+
+    @RequestMapping(value = "/router/editRouter", method = RequestMethod.POST)
+    public String editRouter(@RequestParam(value = "event") long eventId,
+                             @RequestParam String routerName,
+                             @RequestParam String apMac,
+                             @RequestParam long id,
+                             Model model) {
+        Router router = new Router(apMac, routerName, routerService.findEvent(eventId));
+        router.setId(id);
+        routerService.updateRouter(router);
+
+
+        model.addAttribute("events", routerService.listEvents());
+        model.addAttribute("routers", routerService.searchRouters(""));
+        return "index";
+    }
+
+    @RequestMapping(value = "/router/add", method = RequestMethod.POST)
     public String routerAdd(@RequestParam(value = "event") long eventId,
                             @RequestParam String routerName,
-                             @RequestParam String apMac,
-                             Model model)
-    {
+                            @RequestParam String apMac,
+                            Model model) {
         Event event = (eventId != DEFAULT_EVENT_ID) ? routerService.findEvent(eventId) : null;
 
         Router router = new Router(apMac, routerName, event);
@@ -85,13 +118,12 @@ public class AppController {
         return "redirect:/";
     }
 
-    @RequestMapping(value="/event/add", method = RequestMethod.POST)
+    @RequestMapping(value = "/event/add", method = RequestMethod.POST)
     public String eventAdd(@RequestParam String name,
                            @RequestParam String location,
                            @ModelAttribute Date dateFrom,
                            @ModelAttribute Date dateTo,
-                           Model model)
-    {
+                           Model model) {
         routerService.addEvent(new Event(name, location, dateFrom, dateTo));
 
         model.addAttribute("events", routerService.listEvents());

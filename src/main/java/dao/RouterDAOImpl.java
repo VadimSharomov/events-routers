@@ -65,4 +65,9 @@ public class RouterDAOImpl implements RouterDAO {
         query.setParameter("pattern", "%" + pattern + "%");
         return (List<Router>) query.getResultList();
     }
+
+    @Override
+    public Router findOne(long id) {
+        return entityManager.getReference(Router.class, id);
+    }
 }

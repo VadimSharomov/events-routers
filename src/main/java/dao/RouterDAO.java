@@ -17,4 +17,5 @@ public interface RouterDAO {
     void delete(long[] ids);
     List<Router> list(Event event);
     List<Router> list(String pattern);
+    Router findOne(long id);
 }

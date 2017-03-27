@@ -74,4 +74,12 @@ public class RouterService {
         });
         return routers;
     }
+
+    public Router findRouterById(long id) {
+        return routerDAO.findOne(id);
+    }
+
+    public void updateRouter(Router router) {
+        routerDAO.add(router);
+    }
 }
