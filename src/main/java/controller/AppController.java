@@ -12,7 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import service.RouterService;
 
-import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import static org.slf4j.LoggerFactory.getLogger;
@@ -22,7 +23,8 @@ import static org.slf4j.LoggerFactory.getLogger;
 @ComponentScan({"dao,model,service"})
 public class AppController {
     private final static Logger logger = getLogger(AppController.class);
-    static final int DEFAULT_EVENT_ID = -1;
+    private final static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+    private static final int DEFAULT_EVENT_ID = -1;
 
     @Autowired
     private RouterService routerService;
@@ -121,10 +123,15 @@ public class AppController {
     @RequestMapping(value = "/event/add", method = RequestMethod.POST)
     public String eventAdd(@RequestParam String name,
                            @RequestParam String location,
-                           @ModelAttribute Date dateFrom,
-                           @ModelAttribute Date dateTo,
+                           @RequestParam String dateFrom,
+                           @RequestParam String dateTo,
                            Model model) {
-        routerService.addEvent(new Event(name, location, dateFrom, dateTo));
+
+        try {
+            routerService.addEvent(new Event(name, location, formatter.parse(dateFrom), formatter.parse(dateTo)));
+        } catch (ParseException e) {
+            logger.error("Error data format when added event: " + name + ", " + location + ", " + dateFrom + ", " + dateTo, e.getMessage());
+        }
 
         model.addAttribute("events", routerService.listEvents());
         model.addAttribute("routers", routerService.searchRouters(""));

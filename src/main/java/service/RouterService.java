@@ -45,7 +45,8 @@ public class RouterService {
 
     @Transactional
     public List<Event> listEvents() {
-        return eventDAO.list();
+        List<Event> events = eventDAO.list();
+        return sortEvents(events);
     }
 
     @Transactional
@@ -64,6 +65,14 @@ public class RouterService {
         return sortRouters(routers);
     }
 
+    public Router findRouterById(long id) {
+        return routerDAO.findOne(id);
+    }
+
+    public void updateRouter(Router router) {
+        routerDAO.add(router);
+    }
+
     private List<Router> sortRouters(List<Router> routers) {
         routers.sort(new Comparator<Router>() {
             @Override
@@ -75,11 +84,14 @@ public class RouterService {
         return routers;
     }
 
-    public Router findRouterById(long id) {
-        return routerDAO.findOne(id);
-    }
-
-    public void updateRouter(Router router) {
-        routerDAO.add(router);
+    private List<Event> sortEvents(List<Event> events) {
+        events.sort(new Comparator<Event>() {
+            @Override
+            public int compare(Event o1, Event o2) {
+                int resCompare = String.CASE_INSENSITIVE_ORDER.compare(o1.getName(), o2.getName());
+                return (resCompare != 0) ? resCompare : o1.getName().compareTo(o2.getName());
+            }
+        });
+        return events;
     }
 }
