@@ -46,7 +46,7 @@ public class EventDAOImpl implements EventDAO {
         for (long id : ids) {
             event = entityManager.getReference(Event.class, id);
             entityManager.remove(event);
-            logger.info("Deleted router: '" + event + "'");
+            logger.info("Deleted event: '" + event + "'");
         }
     }
 
