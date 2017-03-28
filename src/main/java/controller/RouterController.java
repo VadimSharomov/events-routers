@@ -86,8 +86,10 @@ public class RouterController {
                              @RequestParam String apMac,
                              @RequestParam long id,
                              Model model) {
-        Router router = new Router(apMac, routerName, routerService.findEvent(eventId));
-        router.setId(id);
+        Router router = routerService.findRouterById(id);
+        router.setRouterName(routerName);
+        router.setApMac(apMac);
+        router.setEvent(routerService.findEvent(eventId));
         routerService.updateRouter(router);
 
 

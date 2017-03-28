@@ -93,8 +93,11 @@ public class EventController {
                             @RequestParam String dateTo,
                             Model model) {
         try {
-            Event event = new Event(name, location, formatter.parse(dateFrom), formatter.parse(dateTo));
-            event.setId(id);
+            Event event = routerService.findEvent(id);
+            event.setName(name);
+            event.setLocation(location);
+            event.setDateFrom(formatter.parse(dateFrom));
+            event.setDateTo(formatter.parse(dateTo));
             routerService.updateEvent(event);
         } catch (ParseException e) {
             logger.error("Error data format when edit event: " + name + ", " + location + ", " + dateFrom + ", " + dateTo, e.getMessage());
