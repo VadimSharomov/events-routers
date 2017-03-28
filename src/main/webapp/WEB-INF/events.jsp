@@ -11,7 +11,7 @@
 <body>
 
 <div class="container">
-    <h3>Events</h3>
+    <h3>Events ${messageHeadEvent}</h3>
 
     <nav class="navbar navbar-default">
         <div class="container-fluid">

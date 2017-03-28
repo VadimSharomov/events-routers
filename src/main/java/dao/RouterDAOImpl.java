@@ -67,6 +67,12 @@ public class RouterDAOImpl implements RouterDAO {
     }
 
     @Override
+    public List<Router> list() {
+        Query query = entityManager.createQuery("SELECT r FROM Router r", Router.class);
+        return (List<Router>) query.getResultList();
+    }
+
+    @Override
     public Router findOne(long id) {
         return entityManager.getReference(Router.class, id);
     }

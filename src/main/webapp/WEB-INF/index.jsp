@@ -11,7 +11,7 @@
 <body>
 
 <div class="container">
-    <h3>Routers</h3>
+    <h3>Routers ${selectedEvent}</h3>
 
     <nav class="navbar navbar-default">
         <div class="container-fluid">
@@ -77,21 +77,6 @@
             </tr>
         </c:forEach>
     </table>
-
-    <nav aria-label="Page navigation">
-        <ul class="pagination">
-            <c:if test="${allPages ne null}">
-                <c:forEach var="i" begin="1" end="${allPages}">
-                    <li><a href="/?page=<c:out value="${i - 1}"/>"><c:out value="${i}"/></a></li>
-                </c:forEach>
-            </c:if>
-            <c:if test="${byGroupPages ne null}">
-                <c:forEach var="i" begin="1" end="${byGroupPages}">
-                    <li><a href="/event/${event_id}?page=<c:out value="${i - 1}"/>"><c:out value="${i}"/></a></li>
-                </c:forEach>
-            </c:if>
-        </ul>
-    </nav>
 </div>
 
 <script>
@@ -116,10 +101,6 @@
                 window.location.reload();
             });
         }
-    });
-
-    $('#add_event').click(function () {
-        window.location.href = '/event_add_page';
     });
 </script>
 </body>

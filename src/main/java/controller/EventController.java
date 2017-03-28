@@ -48,6 +48,7 @@ public class EventController {
         model.addAttribute("events", routerService.listEvents());
         model.addAttribute("currentEvent", event);
         model.addAttribute("routers", routerService.listRouters(event));
+        model.addAttribute("selectedEvent", " of " + event.getName());
         return "index";
     }
 
@@ -55,6 +56,9 @@ public class EventController {
     public String search(@RequestParam String pattern, Model model) {
 
         model.addAttribute("events", routerService.findEvents(pattern));
+        if (!"".equals(pattern)) {
+            model.addAttribute("messageHeadEvent", " searched by '" + pattern + "'");
+        }
         return "events";
     }
 

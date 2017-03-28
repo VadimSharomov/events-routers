@@ -54,6 +54,11 @@ public class RouterService {
     }
 
     @Transactional
+    public List<Router> listRouters() {
+        return sortRouters(routerDAO.list());
+    }
+
+    @Transactional
     public List<Router> listRouters(Event event) {
         return sortRouters(routerDAO.list(event));
     }
