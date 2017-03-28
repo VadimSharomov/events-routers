@@ -62,7 +62,7 @@ public class RouterController {
         model.addAttribute("events", routerService.listEvents());
         model.addAttribute("routers", routerService.listRouters());
         model.addAttribute("selectedEvent", "of all events");
-        return "index";
+        return "redirect:/";
     }
 
     @RequestMapping(value = "/router/edit", method = RequestMethod.POST)
@@ -95,7 +95,7 @@ public class RouterController {
         model.addAttribute("events", routerService.listEvents());
         model.addAttribute("routers", routerService.listRouters());
         model.addAttribute("selectedEvent", "of all events");
-        return "index";
+        return "redirect:/";
     }
 
     @RequestMapping(value = "/router/add", method = RequestMethod.POST)

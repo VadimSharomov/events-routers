@@ -66,7 +66,7 @@ public class EventController {
             routerService.deleteEvent(toDelete);
         }
         model.addAttribute("events", routerService.listEvents());
-        return "events";
+        return "redirect:/events";
     }
 
     @RequestMapping(value = "/event/edit_page", method = RequestMethod.POST)
@@ -80,7 +80,7 @@ public class EventController {
             return "event_edit_page";
         }
         model.addAttribute("events", routerService.listEvents());
-        return "events";
+        return "redirect:/events";
     }
 
     @RequestMapping(value = "/event/edit", method = RequestMethod.POST)
@@ -102,7 +102,7 @@ public class EventController {
         }
 
         model.addAttribute("events", routerService.listEvents());
-        return "events";
+        return "redirect:/events";
     }
 
     @RequestMapping(value = "/event/add", method = RequestMethod.POST)
@@ -119,6 +119,6 @@ public class EventController {
         }
 
         model.addAttribute("events", routerService.listEvents());
-        return "events";
+        return "redirect:/events";
     }
 }
