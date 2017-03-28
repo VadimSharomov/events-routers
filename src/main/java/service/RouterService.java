@@ -68,16 +68,19 @@ public class RouterService {
         return eventDAO.findOne(id);
     }
 
+    @Transactional
     public List<Router> findRouters(String pattern) {
         List<Router> routers = routerDAO.list(pattern);
         return sortRouters(routers);
     }
 
+    @Transactional
     public List<Event> findEvents(String pattern) {
         List<Event> events = eventDAO.list(pattern);
         return sortEvents(events);
     }
 
+    @Transactional
     public Router findRouterById(long id) {
         return routerDAO.findOne(id);
     }
@@ -92,6 +95,7 @@ public class RouterService {
         eventDAO.add(event);
     }
 
+    @Transactional
     private List<Router> sortRouters(List<Router> routers) {
         routers.sort(new Comparator<Router>() {
             @Override
@@ -103,6 +107,7 @@ public class RouterService {
         return routers;
     }
 
+    @Transactional
     private List<Event> sortEvents(List<Event> events) {
         events.sort(new Comparator<Event>() {
             @Override

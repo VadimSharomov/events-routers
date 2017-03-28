@@ -4,8 +4,6 @@ import model.Event;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -63,12 +61,12 @@ public class EventController {
     }
 
     @RequestMapping(value = "/event/delete", method = RequestMethod.POST)
-    public ResponseEntity<Void> delete(@RequestParam(value = "toDelete[]", required = false) long[] toDelete, Model model) {
+    public String delete(@RequestParam(value = "toDelete[]", required = false) long[] toDelete, Model model) {
         if (toDelete != null) {
             routerService.deleteEvent(toDelete);
         }
         model.addAttribute("events", routerService.listEvents());
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        return "events";
     }
 
     @RequestMapping(value = "/event/edit_page", method = RequestMethod.POST)
