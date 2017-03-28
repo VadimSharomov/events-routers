@@ -77,12 +77,20 @@ public class Event implements Serializable {
         return dateFrom;
     }
 
+    public String getDateFromFormat() {
+        return formatter.format(dateFrom);
+    }
+
     public void setDateFrom(Date dateFrom) {
         this.dateFrom = dateFrom;
     }
 
     public Date getDateTo() {
         return dateTo;
+    }
+
+    public String getDateToFormat() {
+        return formatter.format(dateTo);
     }
 
     public void setDateTo(Date dateTo) {

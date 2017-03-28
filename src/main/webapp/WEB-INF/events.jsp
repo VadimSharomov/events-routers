@@ -52,8 +52,8 @@
             <td></td>
             <td><b>Event name</b></td>
             <td><b>Event location</b></td>
-            <td><b>Event dateFrom</b></td>
-            <td><b>Event dateTo</b></td>
+            <td><b>Event date from</b></td>
+            <td><b>Event date to</b></td>
         </tr>
         </thead>
         <c:forEach items="${events}" var="event">
@@ -61,26 +61,12 @@
                 <td><input class="idCheckbox" type="checkbox" name="toDelete[]" value="${event.id}" id="checkbox_${event.id}"/></td>
                 <td>${event.name}</td>
                 <td>${event.location}</td>
-                <td>${event.dateFrom}</td>
-                <td>${event.dateTo}</td>
+                <td>${event.getDateFromFormat()}</td>
+                <td>${event.getDateToFormat()}</td>
             </tr>
         </c:forEach>
     </table>
 
-    <nav aria-label="Page navigation">
-        <ul class="pagination">
-            <c:if test="${allPages ne null}">
-                <c:forEach var="i" begin="1" end="${allPages}">
-                    <li><a href="/?page=<c:out value="${i - 1}"/>"><c:out value="${i}"/></a></li>
-                </c:forEach>
-            </c:if>
-            <c:if test="${byGroupPages ne null}">
-                <c:forEach var="i" begin="1" end="${byGroupPages}">
-                    <li><a href="/event/${event_id}?page=<c:out value="${i - 1}"/>"><c:out value="${i}"/></a></li>
-                </c:forEach>
-            </c:if>
-        </ul>
-    </nav>
 </div>
 
 <script>

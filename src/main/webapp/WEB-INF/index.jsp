@@ -63,8 +63,8 @@
         <tr>
             <td></td>
             <td><b>Router name</b></td>
-            <td><b>apMac</b></td>
-            <td><b>Event</b></td>
+            <td><b>Router apMac</b></td>
+            <td><b>Router event</b></td>
         </tr>
         </thead>
         <c:forEach items="${routers}" var="router">
