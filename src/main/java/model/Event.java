@@ -4,6 +4,7 @@ import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
 @Table(name = "event")
 @Proxy(lazy=false)
 public class Event implements Serializable {
+    private final static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -99,8 +101,8 @@ public class Event implements Serializable {
     public String toString() {
         return "{" + name + '\'' +
                 ", loc:='" + location + '\'' +
-                ", dateFrom=" + dateFrom +
-                ", dateTo=" + dateTo +
+                ", dateFrom=" + formatter.format(dateFrom) +
+                ", dateTo=" + formatter.format(dateTo) +
                 '}';
     }
 }

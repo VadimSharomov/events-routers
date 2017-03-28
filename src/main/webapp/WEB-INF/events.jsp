@@ -17,8 +17,8 @@
         <div class="container-fluid">
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul id="groupList" class="nav navbar-nav">
-                    <li>
-                    <button type="button" class="btn btn-default navbar-btn" onclick="window.location.href='/'">Go to routers</button>
+                    <li class="active">
+                    <button type="button" class="btn btn-primary navbar-btn" onclick="window.location.href='/'">Go to routers</button>
                     </li>
                     <li>
                         <button type="button" id="add_event" class="btn btn-default navbar-btn">Add event</button>
@@ -100,9 +100,11 @@
         $(":checked").each(function () {
             data['toDelete[]'].push($(this).val());
         });
-        $.post("/event/delete", data, function (data, status) {
-            window.location.reload();
-        });
+        if (confirm('Are you sure want to delete event?')) {
+            $.post("/event/delete", data, function (data, status) {
+                window.location.reload();
+            });
+        }
     });
 
 </script>

@@ -17,18 +17,20 @@
         <div class="container-fluid">
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul id="groupList" class="nav navbar-nav">
-                    <li>
-                        <button type="button" class="btn btn-default navbar-btn" onclick="window.location.href='/events'">Go to events</button>
+                    <li class="active">
+                        <button type="button" class="btn btn-primary navbar-btn"
+                                onclick="window.location.href='/events'">Go to events
+                        </button>
                     </li>
                     <li>
                         <button type="button" id="add_router" class="btn btn-default navbar-btn">Add router</button>
                     </li>
                     <li>
-                     <form action="/router/edit" method="post">
+                        <form action="/router/edit" method="post">
                             <input type="hidden" class="router_id" name="router_id" value="">
                             <button type="submit" id="edit_router" class="btn btn-default navbar-btn">Edit router
                             </button>
-                     </form>
+                        </form>
                     </li>
                     <li>
                         <button type="button" id="delete_router" class="btn btn-default navbar-btn">Delete router
@@ -67,7 +69,8 @@
         </thead>
         <c:forEach items="${routers}" var="router">
             <tr>
-                <td><input class="idCheckbox" type="checkbox" name="toDelete[]" value="${router.id}" id="checkbox_${router.id}"/></td>
+                <td><input class="idCheckbox" type="checkbox" name="toDelete[]" value="${router.id}"
+                           id="checkbox_${router.id}"/></td>
                 <td>${router.getName()}</td>
                 <td>${router.apMac}</td>
                 <td>${router.event}</td>
@@ -108,9 +111,11 @@
         $(":checked").each(function () {
             data['toDelete[]'].push($(this).val());
         });
-        $.post("/router/delete", data, function (data, status) {
-            window.location.reload();
-        });
+        if (data.length!=0 && confirm('Are you sure want to delete router?')) {
+            $.post("/router/delete", data, function (data, status) {
+                window.location.reload();
+            });
+        }
     });
 
     $('#add_event').click(function () {

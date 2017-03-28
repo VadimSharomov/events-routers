@@ -25,7 +25,6 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class EventController {
     private final static Logger logger = getLogger(EventController.class);
     private final static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-    private final static SimpleDateFormat formatterDMY = new SimpleDateFormat("dd-MM-yyyy");
     private static final int DEFAULT_EVENT_ID = -1;
 
     @Autowired
@@ -74,8 +73,8 @@ public class EventController {
         if (eventId != null) {
             Event event = routerService.findEvent(eventId);
             model.addAttribute("event", event);
-            model.addAttribute("dateFrom", formatterDMY.format(event.getDateFrom()));
-            model.addAttribute("dateTo", formatterDMY.format(event.getDateTo()));
+            model.addAttribute("dateFrom", formatter.format(event.getDateFrom()));
+            model.addAttribute("dateTo", formatter.format(event.getDateTo()));
             return "event_edit_page";
         }
         model.addAttribute("events", routerService.listEvents());
