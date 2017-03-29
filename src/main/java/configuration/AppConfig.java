@@ -17,10 +17,11 @@ public class AppConfig{
     @Bean
     public UrlBasedViewResolver setupViewResolver() {
         UrlBasedViewResolver viewResolver = new UrlBasedViewResolver();
-        viewResolver.setPrefix("/WEB-INF/");
+        viewResolver.setPrefix("/views/");
         viewResolver.setSuffix(".jsp");
         viewResolver.setViewClass(JstlView.class);
         viewResolver.setOrder(1);
+        viewResolver.setContentType("text/html;charset=UTF-8");
         return viewResolver;
     }
 }

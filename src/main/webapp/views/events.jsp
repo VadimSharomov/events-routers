@@ -3,6 +3,7 @@
 <html>
 <head>
     <title>Events</title>
+    <meta charset="UTF-8"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -18,17 +19,19 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul id="groupList" class="nav navbar-nav">
                     <li class="active">
-                    <button type="button" class="btn btn-primary navbar-btn" onclick="window.location.href='/'">Go to routers</button>
+                        <button type="button" class="btn btn-primary navbar-btn" onclick="window.location.href='/'">Go
+                            to routers
+                        </button>
                     </li>
                     <li>
                         <button type="button" id="add_event" class="btn btn-default navbar-btn">Add event</button>
                     </li>
                     <li>
-                     <form action="/event/edit_page" method="post">
+                        <form action="/event/edit_page" method="post">
                             <input type="hidden" class="event_id" name="event_id" value="">
                             <button type="submit" id="edit_event" class="btn btn-default navbar-btn">Edit event
                             </button>
-                     </form>
+                        </form>
                     </li>
                     <li>
                         <button type="button" id="delete_event" class="btn btn-default navbar-btn">Delete event
@@ -58,7 +61,8 @@
         </thead>
         <c:forEach items="${events}" var="event">
             <tr>
-                <td><input class="idCheckbox" type="checkbox" name="toDelete[]" value="${event.id}" id="checkbox_${event.id}"/></td>
+                <td><input class="idCheckbox" type="checkbox" name="toDelete[]" value="${event.id}"
+                           id="checkbox_${event.id}"/></td>
                 <td>${event.name}</td>
                 <td>${event.location}</td>
                 <td>${event.getDateFromFormat()}</td>

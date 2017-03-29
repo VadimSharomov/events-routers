@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import service.RouterService;
 
-import java.text.SimpleDateFormat;
-
 import static org.slf4j.LoggerFactory.getLogger;
 
 @Controller
@@ -21,8 +19,6 @@ import static org.slf4j.LoggerFactory.getLogger;
 @ComponentScan({"dao,model,service"})
 public class RouterController {
     private final static Logger logger = getLogger(RouterController.class);
-    private final static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-    private final static SimpleDateFormat formatterDMY = new SimpleDateFormat("dd-MM-yyyy");
 
     @Autowired
     private RouterService routerService;
@@ -98,12 +94,14 @@ public class RouterController {
         return "redirect:/";
     }
 
-    @RequestMapping(value = "/router/add", method = RequestMethod.POST)
+    @RequestMapping(value = "/router/add", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     public String routerAdd(@RequestParam(value = "event") long eventId,
                             @RequestParam String routerName,
                             @RequestParam String apMac,
                             Model model) {
         Event event = routerService.findEvent(eventId);
+//        routerName = new String(routerName.getBytes("iso-8859-1"),"UTF-8");
+//        apMac = new String(apMac.getBytes("iso-8859-1"), "UTF-8");
         Router router = new Router(apMac, routerName, event);
         routerService.addRouter(router);
 
