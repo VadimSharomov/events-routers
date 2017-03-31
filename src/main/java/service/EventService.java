@@ -15,47 +15,43 @@ import java.util.List;
  *
  * Created by Vadim on 26.03.2017.
  */
-@Service("routerService")
-public class RouterService {
+@Service("eventService")
+public class EventService {
     @Autowired
     private RouterDAO routerDAO;
     @Autowired
     private EventDAO eventDAO;
 
     @Transactional
-    public void addRouter(Router router) {
-        routerDAO.add(router);
+    public void addEvent(Event event) {
+        eventDAO.add(event);
     }
 
     @Transactional
-    public void deleteRouter(long[] ids) {
-        routerDAO.delete(ids);
+    public void deleteEvent(Event event) {
+        eventDAO.delete(event);
     }
 
     @Transactional
-    public List<Router> listRouters() {
-        return sortRouters(routerDAO.list());
+    public void deleteEvent(long[] ids) {
+        eventDAO.delete(ids);
     }
 
     @Transactional
-    public List<Router> listRouters(Event event) {
-        return sortRouters(routerDAO.list(event));
+    public List<Event> listEvents() {
+        List<Event> events = eventDAO.list();
+        return sortEvents(events);
     }
 
     @Transactional
-    public List<Router> findRouters(String pattern) {
-        List<Router> routers = routerDAO.list(pattern);
-        return sortRouters(routers);
+    public Event findEvent(long id) {
+        return eventDAO.findOne(id);
     }
 
     @Transactional
-    public Router findRouterById(long id) {
-        return routerDAO.findOne(id);
-    }
-
-    @Transactional
-    public void updateRouter(Router router) {
-        routerDAO.add(router);
+    public List<Event> findEvents(String pattern) {
+        List<Event> events = eventDAO.list(pattern);
+        return sortEvents(events);
     }
 
     @Transactional
@@ -64,14 +60,14 @@ public class RouterService {
     }
 
     @Transactional
-    private List<Router> sortRouters(List<Router> routers) {
-        routers.sort(new Comparator<Router>() {
+    private List<Event> sortEvents(List<Event> events) {
+        events.sort(new Comparator<Event>() {
             @Override
-            public int compare(Router o1, Router o2) {
+            public int compare(Event o1, Event o2) {
                 int resCompare = String.CASE_INSENSITIVE_ORDER.compare(o1.getName(), o2.getName());
                 return (resCompare != 0) ? resCompare : o1.getName().compareTo(o2.getName());
             }
         });
-        return routers;
+        return events;
     }
 }

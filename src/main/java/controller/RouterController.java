@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import service.EventService;
 import service.RouterService;
 
 import static org.slf4j.LoggerFactory.getLogger;
@@ -23,9 +24,12 @@ public class RouterController {
     @Autowired
     private RouterService routerService;
 
+    @Autowired
+    private EventService eventService;
+
     @RequestMapping("/")
     public String index(Model model) {
-        model.addAttribute("events", routerService.listEvents());
+        model.addAttribute("events", eventService.listEvents());
         model.addAttribute("routers", routerService.listRouters());
         model.addAttribute("selectedEvent", "of all events");
         return "index";
@@ -34,13 +38,13 @@ public class RouterController {
 
     @RequestMapping("/router_add_page")
     public String routerAddPage(Model model) {
-        model.addAttribute("events", routerService.listEvents());
+        model.addAttribute("events", eventService.listEvents());
         return "router_add_page";
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     public String search(@RequestParam String pattern, Model model) {
-        model.addAttribute("events", routerService.listEvents());
+        model.addAttribute("events", eventService.listEvents());
         model.addAttribute("routers", routerService.findRouters(pattern));
         if ("".equals(pattern)) {
             model.addAttribute("selectedEvent", "of all events");
@@ -55,7 +59,7 @@ public class RouterController {
         if (toDelete != null)
             routerService.deleteRouter(toDelete);
 
-        model.addAttribute("events", routerService.listEvents());
+        model.addAttribute("events", eventService.listEvents());
         model.addAttribute("routers", routerService.listRouters());
         model.addAttribute("selectedEvent", "of all events");
         return "redirect:/";
@@ -67,7 +71,7 @@ public class RouterController {
         if (router_id != null) {
             Router router = routerService.findRouterById(router_id);
 
-            model.addAttribute("events", routerService.listEvents());
+            model.addAttribute("events", eventService.listEvents());
             model.addAttribute("router", router);
             model.addAttribute("router_event", router.getEvent());
             return "router_edit_page";
@@ -84,11 +88,11 @@ public class RouterController {
         Router router = routerService.findRouterById(id);
         router.setRouterName(routerName);
         router.setApMac(apMac);
-        router.setEvent(routerService.findEvent(eventId));
+        router.setEvent(eventService.findEvent(eventId));
         routerService.updateRouter(router);
 
 
-        model.addAttribute("events", routerService.listEvents());
+        model.addAttribute("events", eventService.listEvents());
         model.addAttribute("routers", routerService.listRouters());
         model.addAttribute("selectedEvent", "of all events");
         return "redirect:/";
@@ -99,11 +103,11 @@ public class RouterController {
                             @RequestParam String routerName,
                             @RequestParam String apMac,
                             Model model) {
-        Event event = routerService.findEvent(eventId);
+        Event event = eventService.findEvent(eventId);
         Router router = new Router(apMac, routerName, event);
         routerService.addRouter(router);
 
-        model.addAttribute("events", routerService.listEvents());
+        model.addAttribute("events", eventService.listEvents());
         model.addAttribute("routers", routerService.listRouters());
         model.addAttribute("selectedEvent", "of all events");
         return "redirect:/";
