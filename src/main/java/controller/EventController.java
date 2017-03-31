@@ -105,7 +105,7 @@ public class EventController {
         return "redirect:/events";
     }
 
-    @RequestMapping(value = "/event/add", method = RequestMethod.POST)
+    @RequestMapping(value = "/event/add", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     public String eventAdd(@RequestParam String name,
                            @RequestParam String location,
                            @RequestParam String dateFrom,

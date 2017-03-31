@@ -94,14 +94,12 @@ public class RouterController {
         return "redirect:/";
     }
 
-    @RequestMapping(value = "/router/add", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
+    @RequestMapping(value = "/router/add", method = RequestMethod.POST)
     public String routerAdd(@RequestParam(value = "event") long eventId,
                             @RequestParam String routerName,
                             @RequestParam String apMac,
                             Model model) {
         Event event = routerService.findEvent(eventId);
-//        routerName = new String(routerName.getBytes("iso-8859-1"),"UTF-8");
-//        apMac = new String(apMac.getBytes("iso-8859-1"), "UTF-8");
         Router router = new Router(apMac, routerName, event);
         routerService.addRouter(router);
 
